@@ -5,9 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>모바일 청첩장</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- 고급스러운 한글 웹폰트(예: Noto Serif KR) 적용 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        body { margin: 0; padding: 0; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Serif KR', serif;
+            background: #fff;
+        }
         .side-tabs {
             position: fixed;
             left: 0;
@@ -56,17 +63,26 @@
         /* 메인 배경 사진 스타일 */
         .main-hero-photo {
             position: relative;
-            width: 100%;
-            height: 300px;
+            width: 100vw;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 380px; /* 높이 더 크게 */
             margin-bottom: 24px;
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            background: #fff; /* 사진 비율 안맞을 때 흰색 여백 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .main-hero-img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* 비율 유지, 여백 흰색 */
+            background: #fff;
+            display: block;
             transition: transform 0.8s;
         }
         .main-hero-text {
@@ -194,6 +210,11 @@
             .gallery-main-img { height: 180px; }
             .gallery-thumb { width: 48px; height: 48px; }
             .calendar-table th, .calendar-table td { width: 28px; height: 28px; font-size: 13px; }
+            .main-hero-photo {
+                height: 55vw; /* 모바일에서 더 꽉 차게 */
+                min-height: 220px;
+                max-height: 400px;
+            }
         }
     </style>
 </head>

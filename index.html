@@ -152,14 +152,17 @@
             margin-bottom: 16px;
         }
         .gallery-main-img {
-            width: 90vw;
-            max-width: 480px;
-            height: 320px;
-            object-fit: cover;
+            width: 100vw;
+            max-width: 600px;
+            height: 420px;
+            object-fit: contain;      /* 비율 유지, 여백 흰색 */
+            background: #fff;
             border-radius: 16px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.08);
             transition: opacity 0.4s;
             cursor: pointer;
+            display: block;
+            margin: 0 auto;
         }
         .gallery-thumbs {
             display: flex;
@@ -207,7 +210,7 @@
                 transform: none;
             }
             .side-tab { padding: 12px 6px; font-size: 14px; }
-            .gallery-main-img { height: 180px; }
+            .gallery-main-img { height: 55vw; min-height: 180px; max-height: 320px; }
             .gallery-thumb { width: 48px; height: 48px; }
             .calendar-table th, .calendar-table td { width: 28px; height: 28px; font-size: 13px; }
             .main-hero-photo {
@@ -341,8 +344,7 @@
                         <td>
                             <div style="width:36px; height:36px; margin:0 auto;">26</div>
                         </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">27</div>
+                        <div style="width:36px; height:36px; margin:0 auto;">27</div>
                         </td>
                     </tr>
                     <tr>

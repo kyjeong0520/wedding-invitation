@@ -6,13 +6,42 @@
     <title>모바일 청첩장</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 16px; }
-        .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; background: #f9f9f9; }
-        .tab.active { background: #fff; border-bottom: 2px solid #ffb6b6; font-weight: bold; }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 16px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 100;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            background: #f9f9f9;
+            transition: background 0.2s;
+        }
+        .tab.active {
+            background: #fff;
+            border-bottom: 2px solid #ffb6b6;
+            font-weight: bold;
+        }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .gallery { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-        .gallery img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .gallery img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -39,10 +68,8 @@
         </section>
     </section>
     <section class="tab-content">
-        <div class="gallery">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400" alt="갤러리1">
-            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400" alt="갤러리2">
-            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400" alt="갤러리3">
+        <div class="gallery" id="gallery">
+            <!-- JS로 사진 폴더의 이미지를 불러와서 표시합니다 -->
         </div>
     </section>
     <section class="tab-content">
@@ -71,6 +98,20 @@
                 el.classList.toggle('active', i === idx);
             });
         }
+
+        // 사진 갤러리 폴더에서 이미지 자동 로드 (사진은 /gallery 폴더에 넣으세요)
+        // 예시: gallery/photo1.jpg, gallery/photo2.jpg, ...
+        const galleryFolder = 'gallery';
+        const galleryCount = 6; // 사진 개수에 맞게 수정
+        window.addEventListener('DOMContentLoaded', () => {
+            const gallery = document.getElementById('gallery');
+            for(let i=1; i<=galleryCount; i++) {
+                const img = document.createElement('img');
+                img.src = `${galleryFolder}/photo${i}.jpg`;
+                img.alt = `갤러리${i}`;
+                gallery.appendChild(img);
+            }
+        });
     </script>
 </body>
 </html>

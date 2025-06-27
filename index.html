@@ -5,25 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>모바일 청첩장</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 16px; }
+        .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; background: #f9f9f9; }
+        .tab.active { background: #fff; border-bottom: 2px solid #ffb6b6; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .gallery { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .gallery img { width: 100px; height: 100px; object-fit: cover; border-radius: 8px; }
+    </style>
 </head>
 <body>
     <header>
         <h1>우리 결혼합니다</h1>
         <h2>정광용 & 윤나연</h2>
     </header>
-    <section class="invitation-details">
-        <p>
-            저희 두 사람이 사랑으로 하나 되는 자리에<br>
-            소중한 분들을 모시고자 합니다.<br>
-            오셔서 따뜻한 축복으로 함께 해주세요.
-        </p>
-        <p>
-            <strong>2025년 12월 07일 토요일 오전 11시</strong><br>
-            서울 전초구 매헌로 16 라시따시어터
-        </p>
+    <div class="tabs">
+        <div class="tab active" onclick="showTab(0)">초대장</div>
+        <div class="tab" onclick="showTab(1)">사진 갤러리</div>
+        <div class="tab" onclick="showTab(2)">오시는 길</div>
+    </div>
+    <section class="tab-content active">
+        <section class="invitation-details">
+            <p>
+                저희 두 사람이 사랑으로 하나 되는 자리에<br>
+                소중한 분들을 모시고자 합니다.<br>
+                오셔서 따뜻한 축복으로 함께 해주세요.
+            </p>
+            <p>
+                <strong>2025년 12월 07일 토요일 오전 11시</strong><br>
+                서울 전초구 매헌로 16 라시따시어터
+            </p>
+        </section>
+    </section>
+    <section class="tab-content">
+        <div class="gallery">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400" alt="갤러리1">
+            <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=400" alt="갤러리2">
+            <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400" alt="갤러리3">
+        </div>
+    </section>
+    <section class="tab-content">
+        <!-- 카카오맵 지도 퍼가기 소스 시작 -->
+        <div id="daumRoughmapContainer1751035919843" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+        <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+        <script charset="UTF-8">
+            new daum.roughmap.Lander({
+                "timestamp" : "1751035919843",
+                "key" : "4app5ti78xk",
+                "mapWidth" : "100%",
+                "mapHeight" : "360"
+            }).render();
+        </script>
+        <!-- 카카오맵 지도 퍼가기 소스 끝 -->
     </section>
     <footer>
         © 2025 정광용 & 윤나연의 모바일 청첩장
     </footer>
+    <script>
+        function showTab(idx) {
+            document.querySelectorAll('.tab').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+            document.querySelectorAll('.tab-content').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+        }
+    </script>
 </body>
 </html>

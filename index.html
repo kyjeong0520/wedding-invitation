@@ -49,21 +49,48 @@
         section {
             padding: 40px 0 20px 0;
         }
-        .gallery {
+        /* 갤러리 스타일 */
+        .gallery-main {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
             justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
         }
-        .gallery img {
-            width: 100px;
-            height: 100px;
+        .gallery-main-img {
+            width: 90vw;
+            max-width: 480px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            transition: opacity 0.4s;
+            cursor: pointer;
+        }
+        .gallery-thumbs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .gallery-thumb {
+            width: 70px;
+            height: 70px;
             object-fit: cover;
             border-radius: 8px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border 0.2s;
+            opacity: 0.7;
+        }
+        .gallery-thumb.active {
+            border: 2px solid #ffb6b6;
+            opacity: 1;
         }
         @media (max-width: 600px) {
             .main-content { margin-left: 48px; }
             .side-tab { padding: 12px 6px; font-size: 14px; }
+            .gallery-main-img { height: 180px; }
+            .gallery-thumb { width: 48px; height: 48px; }
         }
     </style>
 </head>
@@ -94,8 +121,11 @@
         </section>
         <section id="section-gallery">
             <h3>사진 갤러리</h3>
-            <div class="gallery" id="gallery">
-                <!-- JS로 사진 폴더의 이미지를 불러와서 표시합니다 -->
+            <div class="gallery-main">
+                <img id="gallery-main-img" class="gallery-main-img" src="" alt="메인사진">
+            </div>
+            <div class="gallery-thumbs" id="gallery-thumbs">
+                <!-- 썸네일 이미지가 JS로 들어갑니다 -->
             </div>
         </section>
         <section id="section-map">
@@ -140,18 +170,52 @@
             });
         });
 
-        // 사진 갤러리 폴더에서 이미지 자동 로드 (사진은 /gallery 폴더에 넣으세요)
-        // 예시: gallery/photo1.jpg, gallery/photo2.jpg, ...
+        // 갤러리 이미지 로드 및 페이드 효과
         const galleryFolder = 'gallery';
         const galleryCount = 6; // 사진 개수에 맞게 수정
-        window.addEventListener('DOMContentLoaded', () => {
-            const gallery = document.getElementById('gallery');
-            for(let i=1; i<=galleryCount; i++) {
-                const img = document.createElement('img');
-                img.src = `${galleryFolder}/photo${i}.jpg`;
-                img.alt = `갤러리${i}`;
-                gallery.appendChild(img);
+        let galleryImages = [];
+        let currentIdx = 0;
+
+        function setMainImage(idx, fade = true) {
+            const mainImg = document.getElementById('gallery-main-img');
+            const thumbs = document.querySelectorAll('.gallery-thumb');
+            if (fade) {
+                mainImg.style.opacity = 0.2;
+                setTimeout(() => {
+                    mainImg.src = galleryImages[idx];
+                    mainImg.style.opacity = 1;
+                }, 180);
+            } else {
+                mainImg.src = galleryImages[idx];
+                mainImg.style.opacity = 1;
             }
+            thumbs.forEach((el, i) => el.classList.toggle('active', i === idx));
+            currentIdx = idx;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // 이미지 배열 생성
+            for(let i=1; i<=galleryCount; i++) {
+                galleryImages.push(`${galleryFolder}/photo${i}.jpg`);
+            }
+            // 썸네일 생성
+            const thumbsDiv = document.getElementById('gallery-thumbs');
+            galleryImages.forEach((src, idx) => {
+                const thumb = document.createElement('img');
+                thumb.src = src;
+                thumb.className = 'gallery-thumb' + (idx === 0 ? ' active' : '');
+                thumb.alt = `갤러리${idx+1}`;
+                thumb.addEventListener('click', () => setMainImage(idx));
+                thumbsDiv.appendChild(thumb);
+            });
+            // 메인 이미지 초기화
+            setMainImage(0, false);
+
+            // 메인 이미지 클릭 시 다음 이미지로 페이드 전환
+            document.getElementById('gallery-main-img').addEventListener('click', () => {
+                let nextIdx = (currentIdx + 1) % galleryImages.length;
+                setMainImage(nextIdx);
+            });
         });
     </script>
 </body>

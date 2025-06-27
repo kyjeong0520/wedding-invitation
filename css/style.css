@@ -43,3 +43,42 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.main-hero-photo {
+    position: relative;
+    width: 100vw;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 340px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.main-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.main-hero-text {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 2em;
+    font-weight: 400;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    letter-spacing: 1px;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .main-hero-photo { height: 220px; }
+    .main-hero-text { font-size: 1.2em; bottom: 16px; }
+}

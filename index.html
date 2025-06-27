@@ -6,14 +6,8 @@
     <title>모바일 청첩장</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        /* 사이드 탭 스타일 */
+        html { scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; }
         .side-tabs {
             position: fixed;
             left: 0;
@@ -43,11 +37,10 @@
             border-radius: 0 8px 8px 0;
         }
         .main-content {
-            margin-left: 60px; /* 사이드탭 공간 확보 */
+            margin-left: 60px;
             padding: 0 10px;
             max-width: 600px;
             margin-right: auto;
-            margin-left: 60px;
         }
         .centered-section {
             display: flex;
@@ -56,8 +49,45 @@
             justify-content: center;
             text-align: center;
         }
-        section {
-            padding: 40px 0 20px 0;
+        section { padding: 40px 0 20px 0; }
+        /* 달력 스타일 */
+        .calendar-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 24px 0;
+        }
+        .calendar-table {
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .calendar-table th, .calendar-table td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .calendar-table th {
+            background: #ffeaea;
+            color: #ff6b6b;
+        }
+        .calendar-table td {
+            background: #fff;
+            color: #333;
+        }
+        .calendar-table .event-day {
+            background: #ffb6b6;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50%;
+        }
+        .calendar-caption {
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 18px;
         }
         /* 갤러리 스타일 */
         .gallery-main {
@@ -104,7 +134,7 @@
             justify-content: center;
             width: 100%;
         }
-        #daumRoughmapContainer1751035919843 {
+        #daumRoughmapContainer1751037731858 {
             margin: 0 auto;
         }
         @media (max-width: 600px) {
@@ -112,34 +142,66 @@
             .side-tab { padding: 12px 6px; font-size: 14px; }
             .gallery-main-img { height: 180px; }
             .gallery-thumb { width: 48px; height: 48px; }
+            .calendar-table th, .calendar-table td { width: 28px; height: 28px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
     <!-- 사이드 탭 -->
     <div class="side-tabs">
-        <button class="side-tab active" onclick="scrollToSection(0)">초대장</button>
-        <button class="side-tab" onclick="scrollToSection(1)">사진</button>
-        <button class="side-tab" onclick="scrollToSection(2)">오시는 길</button>
+        <button class="side-tab active" onclick="scrollToSection(0)">인사말</button>
+        <button class="side-tab" onclick="scrollToSection(1)">예식일시</button>
+        <button class="side-tab" onclick="scrollToSection(2)">갤러리</button>
+        <button class="side-tab" onclick="scrollToSection(3)">오시는 길</button>
     </div>
     <div class="main-content">
         <header class="centered-section">
             <h1>우리 결혼합니다</h1>
             <h2>정광용 & 윤나연</h2>
         </header>
-        <section id="section-invite" class="centered-section">
-            <section class="invitation-details">
-                <p>
-                    저희 두 사람이 사랑으로 하나 되는 자리에<br>
-                    소중한 분들을 모시고자 합니다.<br>
-                    오셔서 따뜻한 축복으로 함께 해주세요.
-                </p>
-                <p>
-                    <strong>2025년 12월 07일 토요일 오전 11시</strong><br>
-                    서울 전초구 매헌로 16 라시따시어터
-                </p>
-            </section>
+        <!-- 인사말 -->
+        <section id="section-greeting" class="centered-section">
+            <p style="font-size:1.1em; line-height:1.7; margin-bottom:0;">
+                저희 두 사람이 사랑으로 하나 되는 자리에<br>
+                소중한 분들을 모시고자 합니다.<br>
+                오셔서 따뜻한 축복으로 함께 해주세요.
+            </p>
         </section>
+        <!-- 예식일시(달력) -->
+        <section id="section-date" class="centered-section">
+            <div class="calendar-wrap">
+                <div class="calendar-caption">2025년 12월</div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+                        </tr>
+                        <tr>
+                            <td class="event-day">7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td>
+                        </tr>
+                        <tr>
+                            <td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>
+                        </tr>
+                        <tr>
+                            <td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td>
+                        </tr>
+                        <tr>
+                            <td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td><td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="margin-top:10px; font-size:1em;">
+                    <strong>2025년 12월 7일 (일) 오전 11시</strong><br>
+                    서울 전초구 매헌로 16 라시따시어터
+                </div>
+            </div>
+        </section>
+        <!-- 갤러리 -->
         <section id="section-gallery" class="centered-section">
             <h3>사진 갤러리</h3>
             <div class="gallery-main">
@@ -149,6 +211,7 @@
                 <!-- 썸네일 이미지가 JS로 들어갑니다 -->
             </div>
         </section>
+        <!-- 오시는 길 -->
         <section id="section-map" class="centered-section">
             <h3>오시는 길</h3>
             <div class="map-wrapper">
@@ -172,7 +235,7 @@
     </div>
     <script>
         // 부드러운 스크롤 및 탭 활성화
-        const sectionIds = ['section-invite', 'section-gallery', 'section-map'];
+        const sectionIds = ['section-greeting', 'section-date', 'section-gallery', 'section-map'];
         function scrollToSection(idx) {
             document.getElementById(sectionIds[idx]).scrollIntoView({ behavior: 'smooth' });
             document.querySelectorAll('.side-tab').forEach((el, i) => {

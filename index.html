@@ -38,9 +38,12 @@
         }
         .main-content {
             margin-left: 60px;
-            padding: 0 10px;
-            max-width: 600px;
             margin-right: auto;
+            max-width: 600px;
+            padding: 0 10px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
         }
         .centered-section {
             display: flex;
@@ -173,8 +176,20 @@
         #daumRoughmapContainer1751037731858 {
             margin: 0 auto;
         }
+        @media (max-width: 900px) {
+            .main-content {
+                left: 0;
+                transform: none;
+                margin-left: 48px;
+                margin-right: 0;
+            }
+        }
         @media (max-width: 600px) {
-            .main-content { margin-left: 48px; }
+            .main-content {
+                margin-left: 48px;
+                left: 0;
+                transform: none;
+            }
             .side-tab { padding: 12px 6px; font-size: 14px; }
             .gallery-main-img { height: 180px; }
             .gallery-thumb { width: 48px; height: 48px; }

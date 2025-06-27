@@ -45,6 +45,16 @@
         .main-content {
             margin-left: 60px; /* 사이드탭 공간 확보 */
             padding: 0 10px;
+            max-width: 600px;
+            margin-right: auto;
+            margin-left: 60px;
+        }
+        .centered-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
         section {
             padding: 40px 0 20px 0;
@@ -86,6 +96,17 @@
             border: 2px solid #ffb6b6;
             opacity: 1;
         }
+        /* 지도 중앙 정렬 */
+        .map-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        #daumRoughmapContainer1751035919843 {
+            margin: 0 auto;
+        }
         @media (max-width: 600px) {
             .main-content { margin-left: 48px; }
             .side-tab { padding: 12px 6px; font-size: 14px; }
@@ -102,11 +123,11 @@
         <button class="side-tab" onclick="scrollToSection(2)">오시는 길</button>
     </div>
     <div class="main-content">
-        <header>
+        <header class="centered-section">
             <h1>우리 결혼합니다</h1>
             <h2>정광용 & 윤나연</h2>
         </header>
-        <section id="section-invite">
+        <section id="section-invite" class="centered-section">
             <section class="invitation-details">
                 <p>
                     저희 두 사람이 사랑으로 하나 되는 자리에<br>
@@ -119,7 +140,7 @@
                 </p>
             </section>
         </section>
-        <section id="section-gallery">
+        <section id="section-gallery" class="centered-section">
             <h3>사진 갤러리</h3>
             <div class="gallery-main">
                 <img id="gallery-main-img" class="gallery-main-img" src="" alt="메인사진">
@@ -128,22 +149,24 @@
                 <!-- 썸네일 이미지가 JS로 들어갑니다 -->
             </div>
         </section>
-        <section id="section-map">
+        <section id="section-map" class="centered-section">
             <h3>오시는 길</h3>
-            <!-- 카카오맵 지도 퍼가기 소스 시작 -->
-            <div id="daumRoughmapContainer1751035919843" class="root_daum_roughmap root_daum_roughmap_landing"></div>
-            <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
-            <script charset="UTF-8">
-                new daum.roughmap.Lander({
-                    "timestamp" : "1751035919843",
-                    "key" : "4app5ti78xk",
-                    "mapWidth" : "100%",
-                    "mapHeight" : "360"
-                }).render();
-            </script>
-            <!-- 카카오맵 지도 퍼가기 소스 끝 -->
+            <div class="map-wrapper">
+                <!-- 카카오맵 지도 퍼가기 소스 시작 -->
+                <div id="daumRoughmapContainer1751035919843" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+                <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+                <script charset="UTF-8">
+                    new daum.roughmap.Lander({
+                        "timestamp" : "1751035919843",
+                        "key" : "4app5ti78xk",
+                        "mapWidth" : "100%",
+                        "mapHeight" : "360"
+                    }).render();
+                </script>
+                <!-- 카카오맵 지도 퍼가기 소스 끝 -->
+            </div>
         </section>
-        <footer>
+        <footer class="centered-section">
             © 2025 정광용 & 윤나연의 모바일 청첩장
         </footer>
     </div>

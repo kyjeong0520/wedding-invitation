@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>모바일 청첩장</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- 고급스러운 한글 웹폰트(예: Noto Serif KR) 적용 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== 기본 스타일 ===== */
         html { scroll-behavior: smooth; }
         body {
             margin: 0;
@@ -15,42 +14,25 @@
             font-family: 'Noto Serif KR', serif;
             background: #fff;
         }
-        .side-tabs {
-            position: fixed;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            background: rgba(255,255,255,0.95);
-            border-radius: 0 12px 12px 0;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
-            z-index: 200;
+
+        /* ===== 새로 추가된 페이드인 애니메이션 스타일 ===== */
+        /* 애니메이션을 적용할 섹션의 초기 상태 (투명하고 살짝 아래에 위치) */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
-        .side-tab {
-            padding: 16px 12px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            color: #333;
-            outline: none;
-            transition: background 0.2s, color 0.2s;
+        /* 화면에 보일 때 적용될 스타일 (선명하고 제자리로) */
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .side-tab.active {
-            background: #ffb6b6;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 0 8px 8px 0;
-        }
+        /* ============================================== */
+
         .main-content {
-            margin-left: 60px;
-            margin-right: auto;
-            max-width: 600px;
+            margin: 0 auto;
+            max-width: 700px;
             padding: 0 10px;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
         }
         .centered-section {
             display: flex;
@@ -58,189 +40,65 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 80px 0; /* 섹션 간 간격 확보 */
+            box-sizing: border-box;
         }
-        section { padding: 40px 0 20px 0; }
-        /* 메인 배경 사진 스타일 */
+
+        /* 메인 사진 스타일 */
         .main-hero-photo {
-            position: relative;
-            width: 100vw;
+            width: 100%;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 380px; /* 높이 더 크게 */
-            margin-bottom: 24px;
+            margin: 0 auto 24px auto;
+            height: 380px;
             overflow: hidden;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            background: #fff; /* 사진 비율 안맞을 때 흰색 여백 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .main-hero-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* 비율 유지, 여백 흰색 */
-            background: #fff;
-            display: block;
-            transition: transform 0.8s;
+            width: 100%; height: 100%; object-fit: cover;
         }
-        .main-hero-text {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            right: 16px;
-            color: #fff;
-            font-size: 1.5em;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s, transform 0.4s;
-        }
-        .main-hero-photo:hover .main-hero-img {
-            transform: scale(1.1);
-        }
-        .main-hero-photo:hover .main-hero-text {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* 달력 스타일 */
-        .calendar-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 24px 0;
-        }
-        .calendar-table {
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            overflow: hidden;
-        }
-        .calendar-table th, .calendar-table td {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            font-size: 16px;
-        }
-        .calendar-table th {
-            background: #ffeaea;
-            color: #ff6b6b;
-        }
-        .calendar-table td {
-            background: #fff;
-            color: #333;
-        }
-        .calendar-table .event-day {
-            background: #ffb6b6;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 50%;
-        }
-        .calendar-caption {
-            margin-bottom: 8px;
-            font-weight: bold;
-            font-size: 18px;
-        }
+        
         /* 갤러리 스타일 */
-        .gallery-main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 16px;
-        }
         .gallery-main-img {
-            width: 100vw;
-            max-width: 600px;
-            height: 420px;
-            object-fit: contain;      /* 비율 유지, 여백 흰색 */
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            transition: opacity 0.4s;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto;
+            width: 100%; max-width: 600px; height: 420px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 16px; transition: opacity 0.4s;
         }
-        .gallery-thumbs {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .gallery-thumbs-scroll {
+            display: flex; gap: 10px; overflow-x: auto; padding: 12px 0; max-width: 600px; scrollbar-width: none;
         }
+        .gallery-thumbs-scroll::-webkit-scrollbar { display: none; }
         .gallery-thumb {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: border 0.2s;
-            opacity: 0.7;
+            width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid transparent; cursor: pointer; opacity: 0.7; flex-shrink: 0; transition: border 0.2s, opacity 0.2s;
         }
-        .gallery-thumb.active {
-            border: 2px solid #ffb6b6;
-            opacity: 1;
+        .gallery-thumb.active { border: 2px solid #ffb6b6; opacity: 1; }
+
+        /* 하단 고정 탭 스타일 (기존 코드 유지) */
+        .bottom-tabs {
+            position: fixed; left: 0; bottom: 0; width: 100%; display: flex; justify-content: center; gap: 8px; background: rgba(255,255,255,0.85); box-shadow: 0 -2px 12px rgba(0,0,0,0.06); z-index: 300; padding: 8px 0 6px 0; border-top-left-radius: 16px; border-top-right-radius: 16px; backdrop-filter: blur(4px);
         }
-        /* 지도 중앙 정렬 */
-        .map-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+        .bottom-tab {
+            padding: 10px 18px; cursor: pointer; border: none; background: none; font-size: 1.08em; color: #333; outline: none; border-radius: 8px; font-family: inherit; transition: background 0.2s, color 0.2s; opacity: 0.85;
         }
-        #daumRoughmapContainer1751037731858 {
-            margin: 0 auto;
-        }
-        @media (max-width: 900px) {
-            .main-content {
-                left: 0;
-                transform: none;
-                margin-left: 48px;
-                margin-right: 0;
-            }
-        }
+        .bottom-tab.active { background: #ffb6b6; color: #fff; font-weight: bold; opacity: 1; }
+
+        /* 모바일 화면 대응 */
         @media (max-width: 600px) {
-            .main-content {
-                margin-left: 48px;
-                left: 0;
-                transform: none;
-            }
-            .side-tab { padding: 12px 6px; font-size: 14px; }
-            .gallery-main-img { height: 55vw; min-height: 180px; max-height: 320px; }
-            .gallery-thumb { width: 48px; height: 48px; }
-            .calendar-table th, .calendar-table td { width: 28px; height: 28px; font-size: 13px; }
-            .main-hero-photo {
-                height: 55vw; /* 모바일에서 더 꽉 차게 */
-                min-height: 220px;
-                max-height: 400px;
-            }
+            .bottom-tabs { gap: 4px; padding: 4px 0; }
+            .bottom-tab { padding: 8px 10px; font-size: 0.98em; }
+            .main-hero-photo, .gallery-main-img { border-radius: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- 사이드 탭 -->
-    <div class="side-tabs">
-        <button class="side-tab active" onclick="scrollToSection(0)">인사말</button>
-        <button class="side-tab" onclick="scrollToSection(1)">예식일시</button>
-        <button class="side-tab" onclick="scrollToSection(2)">갤러리</button>
-        <button class="side-tab" onclick="scrollToSection(3)">오시는 길</button>
-    </div>
     <div class="main-content">
-        <!-- 메인 배경 사진 영역 -->
         <div class="main-hero-photo">
             <img src="gallery/main1.jpg" alt="메인사진" class="main-hero-img">
-            <div class="main-hero-text">두 사람, 결혼합니다.</div>
         </div>
         <header class="centered-section">
             <h1>우리 결혼합니다</h1>
             <h2>정광용 & 윤나연</h2>
         </header>
-        <!-- 인사말 -->
-        <section id="section-greeting" class="centered-section">
+        
+        <section id="section-greeting" class="centered-section fade-in-section">
             <div style="width:100%; max-width:480px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;">
                     <span style="font-weight:500; font-size:1.1em;">인사말</span>
@@ -252,192 +110,126 @@
                 </div>
             </div>
         </section>
-        <!-- 예식일시(달력) -->
-        <section id="section-date" class="centered-section">
+        
+        <section id="section-date" class="centered-section fade-in-section">
             <div style="width:100%; max-width:480px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;">
-                    <span style="font-weight:500; font-size:1.1em;">예식 일시</span>
-                    <span style="font-size:1.05em; color:#444;">
-                        2025년 12월 7일<br>일요일 오전 11시
-                    </span>
-                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;"><span style="font-weight:500; font-size:1.1em;">예식 일시</span><span style="font-size:1.05em; color:#444;text-align:right;"> 2025년 12월 7일<br>일요일 오전 11시 </span></div>
                 <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-                    <thead>
-                        <tr>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em; padding-bottom:12px;">일</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">월</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">화</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">수</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">목</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">금</th>
-                            <th style="color:#20613a; font-weight:700; font-size:1.1em;">토</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="width:36px; height:36px; margin:0 auto; display:flex; align-items:center; justify-content:center;">
-                                    <span style="display:inline-block; width:36px; height:36px; background:#20613a; color:#fff; border-radius:50%; line-height:36px; font-weight:700;">7</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">8</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">9</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">10</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">11</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">12</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">13</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">14</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">15</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">16</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">17</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">18</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">19</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">20</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">21</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">22</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">23</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">24</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">25</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">26</div>
-                        </td>
-                        <div style="width:36px; height:36px; margin:0 auto;">27</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">28</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">29</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">30</div>
-                        </td>
-                        <td>
-                            <div style="width:36px; height:36px; margin:0 auto;">31</div>
-                        </td>
-                        <td></td><td></td><td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    <!-- 갤러리 -->
-    <section id="section-gallery" class="centered-section">
-        <div style="width:100%; max-width:480px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;">
-                <span style="font-weight:500; font-size:1.1em;">사진 갤러리</span>
+                    <thead><tr><th style="color:#20613a; font-weight:700; font-size:1.1em; padding-bottom:12px;">일</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">월</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">화</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">수</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">목</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">금</th><th style="color:#20613a; font-weight:700; font-size:1.1em;">토</th></tr></thead>
+                    <tbody><tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr><tr><td><div style="width:36px; height:36px; margin:0 auto; display:flex; align-items:center; justify-content:center;"><span style="display:inline-block; width:36px; height:36px; background:#20613a; color:#fff; border-radius:50%; line-height:36px; font-weight:700;">7</span></div></td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td></tr><tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr><tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr><tr><td>28</td><td>29</td><td>30</td><td>31</td><td></td><td></td><td></td></tr></tbody>
+                </table>
             </div>
-            <div class="gallery-main">
-                <img id="gallery-main-img" class="gallery-main-img" src="" alt="메인사진">
-            </div>
-            <div class="gallery-thumbs" id="gallery-thumbs">
-                <!-- 썸네일 이미지가 JS로 들어갑니다 -->
-            </div>
-        </div>
-    </section>
-    <!-- 오시는 길 -->
-    <section id="section-map" class="centered-section">
-        <div style="width:100%; max-width:480px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;">
-                <span style="font-weight:500; font-size:1.1em;">오시는 길 for KakaoMap</span>
-            </div>
-            <div class="map-wrapper">
-                <!-- 카카오맵 지도 퍼가기 소스 시작 -->
-                <div id="daumRoughmapContainer1751038973324" class="root_daum_roughmap root_daum_roughmap_landing"></div>
-                <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
-                <script charset="UTF-8">
-                    new daum.roughmap.Lander({
-                        "timestamp" : "1751038973324",
-                        "key" : "4as3v2bygng",
-                        "mapWidth" : "320",
-                        "mapHeight" : "400"
-                    }).render();
-                </script>
-                <!-- 카카오맵 지도 퍼가기 소스 끝 -->
-            </div>
-        </div>
-    </section>
-    <footer class="centered-section">
-        © 2025 정광용 & 윤나연의 모바일 청첩장
-    </footer>
-</div>
-    <script>
-        // 부드러운 스크롤 및 탭 활성화
-        const sectionIds = ['section-greeting', 'section-date', 'section-gallery', 'section-map'];
-        function scrollToSection(idx) {
-            document.getElementById(sectionIds[idx]).scrollIntoView({ behavior: 'smooth' });
-            document.querySelectorAll('.side-tab').forEach((el, i) => {
-                el.classList.toggle('active', i === idx);
-            });
-        }
+        </section>
 
+        <section id="section-gallery" class="centered-section fade-in-section">
+            <div style="width:100%; max-width:700px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;"><span style="font-weight:500; font-size:1.1em;">사진 갤러리</span></div>
+                <div class="gallery-main">
+                    <img id="gallery-main-img" class="gallery-main-img" src="" alt="메인사진">
+                </div>
+                <div class="gallery-thumbs-scroll" id="gallery-thumbs-scroll"></div>
+                <div style="text-align:center; margin-top:10px;">
+                    <span id="gallery-index" style="font-size:1em; color:#888;"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-map" class="centered-section fade-in-section">
+             <div style="width:100%; max-width:480px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #888; padding-bottom:8px; margin-bottom:24px;"><span style="font-weight:500; font-size:1.1em;">오시는 길</span></div>
+                <div class="map-wrapper">
+                    <div id="daumRoughmapContainer1751038973324" class="root_daum_roughmap root_daum_roughmap_landing" style="width:100%;"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="centered-section" style="padding:40px 0;">
+            © 2025 정광용 & 윤나연의 모바일 청첩장
+        </footer>
+    </div>
+    
+    <div class="bottom-tabs">
+        <button class="bottom-tab active" onclick="scrollToSection('section-greeting')">인사말</button>
+        <button class="bottom-tab" onclick="scrollToSection('section-date')">예식일시</button>
+        <button class="bottom-tab" onclick="scrollToSection('section-gallery')">갤러리</button>
+        <button class="bottom-tab" onclick="scrollToSection('section-map')">오시는 길</button>
+    </div>
+
+    <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+    <script charset="UTF-8">
+        new daum.roughmap.Lander({
+            "timestamp" : "1751038973324",
+            "key" : "4as3v2bygng",
+            "mapWidth" : "100%", // 너비를 100%로 설정하여 반응형으로
+            "mapHeight" : "360"
+        }).render();
+    </script>
+    
+    <script>
+    // ===== 페이지 로드 시 실행될 스크립트 =====
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. 스크롤에 따른 페이드인 효과 (새로 추가 및 수정한 부분) ---
+        // 애니메이션을 적용할 모든 섹션을 선택합니다.
+        const fadeInSections = document.querySelectorAll('.fade-in-section');
+
+        // IntersectionObserver: 스크롤 효율성을 높이는 최신 기술입니다.
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // isIntersecting: 요소가 화면에 보이는지 여부 (true/false)
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible'); // 보이면 'visible' 클래스 추가
+                }
+            });
+        }, {
+            threshold: 0.1 // 요소가 10%만 보여도 애니메이션 시작
+        });
+
+        // 각 섹션에 대해 관찰을 시작합니다.
+        fadeInSections.forEach(section => {
+            observer.observe(section);
+        });
+
+
+        // --- 2. 하단 탭 스크롤 및 활성화 (기존 코드 정리) ---
+        const tabs = document.querySelectorAll('.bottom-tab');
+        const sections = document.querySelectorAll('section');
+
+        window.scrollToSection = function(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        };
+        
         // 스크롤 위치에 따라 탭 활성화
         window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            let activeIdx = 0;
-            sectionIds.forEach((id, i) => {
-                const sec = document.getElementById(id);
-                if (sec.offsetTop - 80 <= scrollY) activeIdx = i;
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 100) { // 100px 위에서부터 활성화
+                    currentSectionId = section.id;
+                }
             });
-            document.querySelectorAll('.side-tab').forEach((el, i) => {
-                el.classList.toggle('active', i === activeIdx);
+
+            tabs.forEach(tab => {
+                // tab의 onclick 속성에서 sectionId를 추출하여 비교
+                if (tab.getAttribute('onclick').includes(currentSectionId)) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
             });
         });
 
-        // 갤러리 이미지 로드 및 페이드 효과
+
+        // --- 3. 갤러리 기능 (기존 코드 유지) ---
         const galleryFolder = 'gallery';
-        const galleryCount = 6; // 사진 개수에 맞게 수정
+        const galleryCount = 3; // 가진 사진 개수에 맞게 수정 (photo1, photo2, photo3)
         let galleryImages = [];
         let currentIdx = 0;
 
         function setMainImage(idx, fade = true) {
             const mainImg = document.getElementById('gallery-main-img');
             const thumbs = document.querySelectorAll('.gallery-thumb');
+            const indexText = document.getElementById('gallery-index');
+
             if (fade) {
                 mainImg.style.opacity = 0.2;
                 setTimeout(() => {
@@ -448,34 +240,41 @@
                 mainImg.src = galleryImages[idx];
                 mainImg.style.opacity = 1;
             }
+
             thumbs.forEach((el, i) => el.classList.toggle('active', i === idx));
             currentIdx = idx;
+            indexText.textContent = `${idx + 1} / ${galleryImages.length}`;
+            
+            const activeThumb = thumbs[idx];
+            if (activeThumb) {
+                activeThumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            // 이미지 배열 생성
-            for(let i=1; i<=galleryCount; i++) {
-                galleryImages.push(`${galleryFolder}/photo${i}.jpg`);
-            }
-            // 썸네일 생성
-            const thumbsDiv = document.getElementById('gallery-thumbs');
-            galleryImages.forEach((src, idx) => {
-                const thumb = document.createElement('img');
-                thumb.src = src;
-                thumb.className = 'gallery-thumb' + (idx === 0 ? ' active' : '');
-                thumb.alt = `갤러리${idx+1}`;
-                thumb.addEventListener('click', () => setMainImage(idx));
-                thumbsDiv.appendChild(thumb);
-            });
-            // 메인 이미지 초기화
-            setMainImage(0, false);
+        for (let i = 1; i <= galleryCount; i++) {
+            galleryImages.push(`${galleryFolder}/photo${i}.jpg`);
+        }
 
-            // 메인 이미지 클릭 시 다음 이미지로 페이드 전환
-            document.getElementById('gallery-main-img').addEventListener('click', () => {
-                let nextIdx = (currentIdx + 1) % galleryImages.length;
-                setMainImage(nextIdx);
-            });
+        const thumbsDiv = document.getElementById('gallery-thumbs-scroll');
+        thumbsDiv.innerHTML = '';
+        galleryImages.forEach((src, idx) => {
+            const thumb = document.createElement('img');
+            thumb.src = src;
+            thumb.className = 'gallery-thumb';
+            thumb.alt = `갤러리${idx+1}`;
+            thumb.onclick = () => setMainImage(idx);
+            thumbsDiv.appendChild(thumb);
         });
+
+        if (galleryImages.length > 0) {
+            setMainImage(0, false);
+        }
+    });
+    
+    // 페이지 새로고침 시 스크롤 위치가 유지되는 것을 방지
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
     </script>
 </body>
 </html>
